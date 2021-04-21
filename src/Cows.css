@@ -1,0 +1,10 @@
+.land-cover-button-container > button{
+    height: 25px;
+    width: 70px;
+    text-align: center;
+    margin-bottom: 10px;
+}
+h3{
+    text-align: center;
+    margin-bottom: 0px;
+}
