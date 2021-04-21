@@ -176,7 +176,8 @@ export default function Cows(){
     };
 
     function fetchLandUseIds(){
-        fetch(`https://nrcs-core-api-dev.stone-env.net:8443/getlanduse`)
+      //final answer endpoint: use get_landuse
+        fetch(`https://nrcs-core-api-dev.stone-env.net:8443/get_landuse`)
         .then(res => {
             if(res.ok){
                 return res.json();

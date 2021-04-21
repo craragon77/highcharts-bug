@@ -9,7 +9,7 @@ export default function SelectMenu(props){
         props.fetchChordChartData(e.target.value);
     }
     function handleMappingIssue(){
-        if(props.options == []){
+        if(props.options == [] || !props.options){
             return null
         }else{
             return(
