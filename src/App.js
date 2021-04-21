@@ -16,6 +16,11 @@ export default function Cows(){
     const [zoom, handleZoom] = useState(10);
     const [status, handleStatus] = useState("loading");
     const [landUse, handleLandUse] = useState([])
+    const [initialRender, handleInitialRender] = useState(false);
+  //   const [defaultDropdown, handleDefaultDropdown] = useState({
+  //     "landuse_id": 1,
+  //     "landuse": "Crop"
+  // })
     const [options, handleChartOptions] = useState({
         title: 'test wheel',
         accessibility: {
@@ -141,7 +146,7 @@ export default function Cows(){
     function fetchChordChartData(landUse){
         //the landuse is the id that we want
         console.log(landUse);
-        fetch('https://nrcs-core-api-dev.stone-env.net:8443/get_chordchart', {
+        fetch('https://nrcs-core-api-dev.stone-env.net:8443/getchordchart', {
             method: 'POST',
             headers: {
                 'content-type': 'application/json'
@@ -158,7 +163,7 @@ export default function Cows(){
         .then(resJson => {
             let formattedData = resJson[0].get_chordchart;
             console.log(resJson);
-            console.log(resJson[0].get_chordchart);
+            console.log(resJson[0].get_chordchar.length);
             handleChartOptions(prevState => ({
                 ...prevState,
                 series: {
@@ -171,7 +176,7 @@ export default function Cows(){
     };
 
     function fetchLandUseIds(){
-        fetch(`https://nrcs-core-api-dev.stone-env.net:8443/get_landuse`)
+        fetch(`https://nrcs-core-api-dev.stone-env.net:8443/getlanduse`)
         .then(res => {
             if(res.ok){
                 return res.json();
@@ -187,7 +192,16 @@ export default function Cows(){
 
     useEffect(() => {
         fetchLandUseIds();
+        handleInitialRender(true);
     }, [])
+
+    function handleMapOfUndefined(){
+      if(initialRender == true){
+        return <SelectMenu options={landUse} fetchChordChartData={fetchChordChartData} initialRender={initialRender}/>
+      }else{
+        return <SelectMenu options={landUse} fetchChordChartData={fetchChordChartData} initialRender={initialRender}/>
+      }
+    }
     
     return(
         <div className="cow-outer-container">
@@ -197,7 +211,7 @@ export default function Cows(){
             </div>
             <h3>Please select your resource</h3>
             <label htmlFor="DummyDropDown" id="dropdown"></label><br/>
-            <SelectMenu options={landUse} fetchChordChartData={fetchChordChartData}/>
+            {handleMapOfUndefined()}
             {/* <div className="land-cover-button-container">
                 <LandCoverButton name={"Cropland"} landStateChange={handleCropLandClick}/>
                 <LandCoverButton name={"Pasture"} landStateChange={handlePastureClick}/>
